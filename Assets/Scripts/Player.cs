@@ -7,7 +7,8 @@ public class Player : MonoBehaviour
     [SerializeField] private float speed;
     [SerializeField] private float jumpForce;
     private Rigidbody2D rb;
-    private bool graunded;
+    [SerializeField] private int maxjump;
+    private int jump;
 
     //input
     private float inputHorizontal;
@@ -15,7 +16,6 @@ public class Player : MonoBehaviour
 
     void Start()
     {
-        graunded = true;
         rb = GetComponent<Rigidbody2D>();
     }
 
@@ -25,9 +25,19 @@ public class Player : MonoBehaviour
         inputHorizontal = Input.GetAxis("Horizontal");
         rb.AddRelativeForce(Vector2.right * inputHorizontal * speed * Time.deltaTime);
 
-        if ((Input.GetButtonDown("Jump") || Input.GetButtonDown("Vertical")) && graunded)
+        if ((Input.GetButtonDown("Jump") || Input.GetButtonDown("Vertical")) && jump < maxjump)
         {
             rb.AddRelativeForce(Vector2.up * jumpForce, ForceMode2D.Impulse);
+            jump++;
         }
     }
+
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (collision.gameObject.layer == LayerMask.NameToLayer("Graund"))
+        {
+            jump = 0;
+        }
+    }
+
 }

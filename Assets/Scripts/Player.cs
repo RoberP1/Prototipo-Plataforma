@@ -26,6 +26,9 @@ public class Player : MonoBehaviour
 
     //Vida
     public int Vida;
+    [SerializeField] private GameObject heart1;
+    [SerializeField] private GameObject heart2;
+    [SerializeField] private GameObject heart3;
 
     private GameManager gamemanager;
 
@@ -35,6 +38,10 @@ public class Player : MonoBehaviour
         rotationFire = -1;
         rb = GetComponent<Rigidbody2D>();
         gamemanager = FindObjectOfType<GameManager>();
+
+        heart1.SetActive(true);
+        heart2.SetActive(true);
+        heart3.SetActive(true);
     }
 
     // Update is called once per frame
@@ -80,10 +87,26 @@ public class Player : MonoBehaviour
         if (collision.CompareTag("Bullet"))
         {
             Vida--;
-            if (Vida <= 0)
+            switch (Vida)
             {
-                gamemanager.Lose();
+                case 2:
+                    heart3.SetActive(false);
+                    break;
+                case 1:
+                    heart2.SetActive(false);
+                    break;
+                default:
+                    heart1.SetActive(false);
+                    heart2.SetActive(false);
+                    heart3.SetActive(false);
+                    gamemanager.Lose();
+                    break;
             }
+        }
+        if (collision.CompareTag("Coin"))
+        {
+            gamemanager.AddCoin();
+            Destroy(collision.gameObject);
         }
     }
     public IEnumerator FireCD(float fireRate)

@@ -6,11 +6,13 @@ using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
+    [SerializeField] private Text coinTxt;
     [SerializeField] private Text winTxt;
     [SerializeField] private Text loseTxt;
     [SerializeField] private Button restartbt;
 
     public int enemys;
+    public int coins;
     void Start()
     {
         winTxt.gameObject.SetActive(false);
@@ -48,5 +50,10 @@ public class GameManager : MonoBehaviour
         {
             Win();
         }
+    }
+    public void AddCoin()
+    {
+        coins++;
+        coinTxt.text = coins.ToString();
     }
 }

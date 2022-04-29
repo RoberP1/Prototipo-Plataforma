@@ -24,11 +24,17 @@ public class Player : MonoBehaviour
     public bool canShot;
     private int rotationFire;
 
+    //Vida
+    public int Vida;
+
+    private GameManager gamemanager;
+
 
     void Start()
     {
         rotationFire = -1;
         rb = GetComponent<Rigidbody2D>();
+        gamemanager = FindObjectOfType<GameManager>();
     }
 
     // Update is called once per frame
@@ -68,10 +74,16 @@ public class Player : MonoBehaviour
         {
             jump = 0;
         }
-        if (collision.collider.CompareTag("Enemy"))
+    }
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.CompareTag("Bullet"))
         {
-            //perder
-            Debug.Log("Perdiste");
+            Vida--;
+            if (Vida <= 0)
+            {
+                gamemanager.Lose();
+            }
         }
     }
     public IEnumerator FireCD(float fireRate)

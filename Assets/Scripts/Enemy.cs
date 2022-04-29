@@ -20,11 +20,13 @@ public class Enemy : MonoBehaviour
     public bool canShot;
     private int rotationFire;
 
+    private GameManager gamemanager;
 
     void Start()
     {
         canShot = true;
         rb = GetComponent<Rigidbody2D>();
+        gamemanager = FindObjectOfType<GameManager>();
         maxleft = transform.position.x - distanceMove;
         maxright = transform.position.x + distanceMove;
     }
@@ -61,7 +63,7 @@ public class Enemy : MonoBehaviour
     {
         if (collision.CompareTag("Bullet"))
         {
-            Destroy(collision.gameObject);
+            gamemanager.EnemyDie();
             Destroy(gameObject);
         }
     }

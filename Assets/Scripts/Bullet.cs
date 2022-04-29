@@ -17,6 +17,10 @@ public class Bullet : MonoBehaviour
         
     }
 
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        Destroy(gameObject);
+    }
     public IEnumerator DestroyCD(float destroyTime)
     {
         yield return new WaitForSeconds(destroyTime);

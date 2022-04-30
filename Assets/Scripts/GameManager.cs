@@ -46,14 +46,10 @@ public class GameManager : MonoBehaviour
     public void EnemyDie()
     {
         enemys--;
-        if (enemys == 0)
-        {
-            Win();
-        }
     }
-    public void AddCoin()
+    public void AddCoin(int quantity)
     {
-        coins++;
+        coins += quantity;
         coinTxt.text = coins.ToString();
     }
 }

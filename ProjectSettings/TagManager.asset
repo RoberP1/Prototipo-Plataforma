@@ -8,6 +8,8 @@ TagManager:
   - Graund
   - Enemy
   - Coin
+  - Spike
+  - powerup
   layers:
   - Default
   - TransparentFX

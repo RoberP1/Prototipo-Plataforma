@@ -10,7 +10,7 @@ public class Player : MonoBehaviour
     
 
     //jump
-    [SerializeField] private int maxjump;
+    public int maxjump;
     private int jump;
 
     //input
@@ -19,9 +19,9 @@ public class Player : MonoBehaviour
     //shot
     [SerializeField] private GameObject shotPref;
     [SerializeField] private float fireImpulse;
-    [SerializeField] private float fireRate;
     [SerializeField] private Transform fireTransform;
-    public bool canShot;
+    public float fireRate;
+    private bool canShot;
     private int rotationFire;
 
     //Vida
@@ -32,9 +32,13 @@ public class Player : MonoBehaviour
 
     private GameManager gamemanager;
 
+    //coins
+    public int addcoin;
 
     void Start()
     {
+        canShot = true;
+        addcoin = 1;
         rotationFire = -1;
         rb = GetComponent<Rigidbody2D>();
         gamemanager = FindObjectOfType<GameManager>();
@@ -81,39 +85,52 @@ public class Player : MonoBehaviour
         {
             jump = 0;
         }
+        if (collision.collider.CompareTag("Spike"))
+        {
+            LossHealth();
+            rb.AddRelativeForce(Vector2.up * 30, ForceMode2D.Impulse);
+
+        }
     }
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.CompareTag("Bullet"))
         {
-            Vida--;
-            switch (Vida)
-            {
-                case 2:
-                    heart3.SetActive(false);
-                    break;
-                case 1:
-                    heart2.SetActive(false);
-                    break;
-                default:
-                    heart1.SetActive(false);
-                    heart2.SetActive(false);
-                    heart3.SetActive(false);
-                    gamemanager.Lose();
-                    break;
-            }
+            LossHealth();
         }
         if (collision.CompareTag("Coin"))
         {
-            gamemanager.AddCoin();
+            gamemanager.AddCoin(addcoin);
             Destroy(collision.gameObject);
         }
     }
+
+    private void LossHealth()
+    {
+        Vida--;
+        switch (Vida)
+        {
+            case 2:
+                heart3.SetActive(false);
+                break;
+            case 1:
+                heart2.SetActive(false);
+                break;
+            default:
+                heart1.SetActive(false);
+                heart2.SetActive(false);
+                heart3.SetActive(false);
+                gamemanager.Lose();
+                break;
+        }
+    }
+
     public IEnumerator FireCD(float fireRate)
     {
         canShot = false;
         yield return new WaitForSeconds(1.0f/fireRate);
         canShot = true;
     }
+
 
 }

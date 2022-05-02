@@ -11,6 +11,7 @@ public class CamaraFollow : MonoBehaviour
     {
         Vector3 targetpos = player.position + offset;
         targetpos.z = -15;
+        targetpos.y = 4;
         transform.position = targetpos;
     }
 }

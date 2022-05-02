@@ -16,6 +16,7 @@ public class FirerateUp : PowerUps
         float temp = player.fireRate;
         yield return new WaitForSeconds(time);
         player.fireRate = temp;
+        UIgameObject.SetActive(false);
         Destroy(gameObject);
     }
 

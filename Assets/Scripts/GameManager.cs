@@ -12,6 +12,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] private Text enemyTxt;
     [SerializeField] private Text coinsTxt;
     [SerializeField] private AudioSource audio;
+    [SerializeField] private AudioSource music;
     [SerializeField] private AudioClip EnemyClip;
     [SerializeField] private AudioClip finishClip;
 
@@ -31,11 +32,13 @@ public class GameManager : MonoBehaviour
 
     public void Lose()
     {
+        music.Pause();
         loseUI.gameObject.SetActive(true);
         Time.timeScale = 0;
     }
     public void Win()
     {
+        music.Pause();
         audio.clip = finishClip;
         audio.Play();
         winUI.gameObject.SetActive(true);

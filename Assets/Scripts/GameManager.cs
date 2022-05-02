@@ -7,17 +7,20 @@ using UnityEngine.SceneManagement;
 public class GameManager : MonoBehaviour
 {
     [SerializeField] private Text coinTxt;
-    [SerializeField] private Text winTxt;
-    [SerializeField] private Text loseTxt;
-    [SerializeField] private Button restartbt;
+    [SerializeField] private GameObject winUI;
+    [SerializeField] private GameObject loseUI;
+    [SerializeField] private Text enemyTxt;
+    [SerializeField] private Text coinsTxt;
+    [SerializeField] private AudioSource audio;
+    [SerializeField] private AudioClip EnemyClip;
+    [SerializeField] private AudioClip finishClip;
 
     public int enemys;
     public int coins;
     void Start()
     {
-        winTxt.gameObject.SetActive(false);
-        loseTxt.gameObject.SetActive(false);
-        restartbt.gameObject.SetActive(false);
+        winUI.gameObject.SetActive(false);
+        loseUI.gameObject.SetActive(false);
     }
 
     // Update is called once per frame
@@ -28,14 +31,16 @@ public class GameManager : MonoBehaviour
 
     public void Lose()
     {
-        loseTxt.gameObject.SetActive(true);
-        restartbt.gameObject.SetActive(true);
+        loseUI.gameObject.SetActive(true);
         Time.timeScale = 0;
     }
     public void Win()
     {
-        winTxt.gameObject.SetActive(true);
-        restartbt.gameObject.SetActive(true);
+        audio.clip = finishClip;
+        audio.Play();
+        winUI.gameObject.SetActive(true);
+        coinsTxt.text = "x" + coins.ToString();
+        enemyTxt.text = "x" + enemys.ToString();
         Time.timeScale = 0;
     }
     public void Restart()
@@ -45,7 +50,9 @@ public class GameManager : MonoBehaviour
     }
     public void EnemyDie()
     {
-        enemys--;
+        audio.clip = EnemyClip;
+        audio.Play();
+        enemys++;
     }
     public void AddCoin(int quantity)
     {

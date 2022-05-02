@@ -5,11 +5,15 @@ using UnityEngine;
 public abstract class PowerUps : MonoBehaviour
 {
     [SerializeField] protected float duration;
+    [SerializeField] protected AudioSource audio;
+    [SerializeField] protected GameObject UIgameObject;
     protected Player player;
 
     public virtual void effect() 
     {
         player = FindObjectOfType<Player>();
+        audio.Play();
+        UIgameObject.SetActive(true);
     }
     public virtual IEnumerator PowerUpDuration(float time)
     {

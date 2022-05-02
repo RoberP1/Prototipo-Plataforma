@@ -12,7 +12,10 @@ public class Enemy : MonoBehaviour
 
     private Rigidbody2D rb;
 
+    [SerializeField] private AudioSource audio;
+
     //shot
+    [SerializeField] private AudioClip fireSound;
     [SerializeField] private GameObject shotPref;
     [SerializeField] private float fireImpulse;
     [SerializeField] private float fireRate;
@@ -46,7 +49,7 @@ public class Enemy : MonoBehaviour
         }
         rb.AddRelativeForce(transform.right * speed * Time.deltaTime);
 
-        RaycastHit2D hit = Physics2D.Raycast(fireTransform.position, transform.forward, 9f);
+        RaycastHit2D hit = Physics2D.Raycast(fireTransform.position, Vector2.left * rotationFire, 9f);
         if (hit.collider != null && hit.collider.CompareTag("Player"))
         {
             rb.velocity = new Vector2(0,0);
@@ -55,6 +58,8 @@ public class Enemy : MonoBehaviour
                 StartCoroutine(FireCD(fireRate));
                 GameObject temp = Instantiate(shotPref, fireTransform.position, Quaternion.identity);
                 temp.GetComponent<Rigidbody2D>().AddRelativeForce(Vector2.left * fireImpulse * rotationFire, ForceMode2D.Impulse);
+                audio.clip = fireSound;
+                audio.Play();
             }
 
         }

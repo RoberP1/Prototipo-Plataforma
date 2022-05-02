@@ -7,16 +7,20 @@ public class Player : MonoBehaviour
     [SerializeField] private float speed;
     [SerializeField] private float jumpForce;
     private Rigidbody2D rb;
+
+    [SerializeField] private AudioSource audio;
     
 
     //jump
     public int maxjump;
     private int jump;
+    [SerializeField] private AudioClip jumpSound;
 
     //input
     private float inputHorizontal;
 
     //shot
+    [SerializeField] private AudioClip fireSound;
     [SerializeField] private GameObject shotPref;
     [SerializeField] private float fireImpulse;
     [SerializeField] private Transform fireTransform;
@@ -26,6 +30,7 @@ public class Player : MonoBehaviour
 
     //Vida
     public int Vida;
+    [SerializeField] private AudioClip healthSound;
     [SerializeField] private GameObject heart1;
     [SerializeField] private GameObject heart2;
     [SerializeField] private GameObject heart3;
@@ -33,6 +38,7 @@ public class Player : MonoBehaviour
     private GameManager gamemanager;
 
     //coins
+    [SerializeField] private AudioClip CoinSound;
     public int addcoin;
 
     void Start()
@@ -69,6 +75,8 @@ public class Player : MonoBehaviour
         {
             rb.AddRelativeForce(Vector2.up * jumpForce , ForceMode2D.Impulse);
             jump++;
+            audio.clip = jumpSound;
+            audio.Play();
         }
 
         if (Input.GetButtonDown("Fire1") && canShot)
@@ -76,6 +84,8 @@ public class Player : MonoBehaviour
             StartCoroutine(FireCD(fireRate));
             GameObject temp = Instantiate(shotPref, fireTransform.position, Quaternion.identity);
             temp.GetComponent<Rigidbody2D>().AddRelativeForce(Vector2.left * fireImpulse * rotationFire, ForceMode2D.Impulse);
+            audio.clip = fireSound;
+            audio.Play();
         }
     }
 
@@ -100,6 +110,8 @@ public class Player : MonoBehaviour
         }
         if (collision.CompareTag("Coin"))
         {
+            audio.clip = CoinSound;
+            audio.Play();
             gamemanager.AddCoin(addcoin);
             Destroy(collision.gameObject);
         }
@@ -123,6 +135,8 @@ public class Player : MonoBehaviour
                 gamemanager.Lose();
                 break;
         }
+        audio.clip = healthSound;
+        audio.Play();
     }
 
     public IEnumerator FireCD(float fireRate)
